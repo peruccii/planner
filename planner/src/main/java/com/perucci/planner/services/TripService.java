@@ -8,6 +8,7 @@ import com.perucci.planner.presenters.ParticipantCreatePresenter;
 import com.perucci.planner.presenters.ParticipantsPresenter;
 import com.perucci.planner.presenters.TripPresenter;
 import com.perucci.planner.repositories.ITripRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class TripService {
 
             updatedTrip.setIsConfirmed(true);
 
-            this.participantService.triggerConfirmationEmailToParticipants(id);
+            this.participantService.triggerConfirmationEmailToParticipants(id, trip);
 
             this.tripRepository.save(updatedTrip);
 

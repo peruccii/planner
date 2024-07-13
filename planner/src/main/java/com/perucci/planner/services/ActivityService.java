@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,8 +47,15 @@ public class ActivityService {
 
             return ResponseEntity.ok(activityResponse);
         }
-
         return ResponseEntity.notFound().build();
+    }
 
+    public ResponseEntity<List<ActivityPresenter>> getAllActivitiesFromId(UUID tripId) {
+         List<ActivityPresenter> activityResponse = this.activityRepository.findAllActivitiesByTripId(tripId).stream().map(activity -> new ActivityPresenter(
+                activity.getId(),
+                activity.getTitle(),
+                activity.getOccursAt())).toList();
+
+        return ResponseEntity.ok(activityResponse);
     }
 }

@@ -4,6 +4,7 @@ import com.perucci.planner.domain.participant.Participant;
 import com.perucci.planner.dtos.ParticipantDTO;
 import com.perucci.planner.repositories.IParticipantRepository;
 import com.perucci.planner.services.ParticipantService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class ParticipantController {
     private ParticipantService participantService;
 
     @PostMapping("/confirm/{id}")
-    public ResponseEntity<Participant> confirmParticipant(@PathVariable UUID id, @RequestBody ParticipantDTO data) {
+    public ResponseEntity<Participant> confirmParticipant(@PathVariable UUID id, @RequestBody @Valid ParticipantDTO data) {
         return this.participantService.confirmParticipant(id, data);
     }
 

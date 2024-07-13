@@ -13,18 +13,20 @@ import com.perucci.planner.repositories.ITripRepository;
 import com.perucci.planner.services.ActivityService;
 import com.perucci.planner.services.ParticipantService;
 import com.perucci.planner.services.TripService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.List;
-import java.util.Optional;
+
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/trips")
+
 public class TripController {
 
     @Autowired
@@ -40,7 +42,7 @@ public class TripController {
     private TripService tripService;
 
     @PostMapping
-    public ResponseEntity<TripPresenter> createTrip(@RequestBody TripDTO data) {
+    public ResponseEntity<TripPresenter> createTrip(@Valid @RequestBody TripDTO data) {
       return this.tripService.createTrip(data);
     }
 
@@ -63,6 +65,12 @@ public class TripController {
     public ResponseEntity<Trip> getTripDetails(@PathVariable UUID id) {
         return this.tripService.getTripDetails(id);
     }
+
+    @GetMapping("/activity/{id}")
+    public ResponseEntity<List<ActivityPresenter>> getAllActivities(@PathVariable UUID id) {
+        return this.activityService.getAllActivitiesFromId(id);
+    }
+
 
     @GetMapping("/confirm/{id}")
     public ResponseEntity<Trip> confirmTrip(@PathVariable UUID id) {

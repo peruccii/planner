@@ -24,14 +24,10 @@ public class ParticipantService {
         Optional<Participant> participant = this.participantRepository.findById(id);
 
         if (participant.isPresent()) {
-
             Participant confirmatedParticipant = participant.get();
-
             confirmatedParticipant.setName(data.name());
             confirmatedParticipant.setIsConfirmed(true);
-
             this.participantRepository.save(confirmatedParticipant);
-
             return ResponseEntity.ok(confirmatedParticipant);
         }
 
@@ -39,8 +35,8 @@ public class ParticipantService {
     }
 
     public void registerParticipantsToTrip(List<String> participants_to_invite, Trip trip) {
-        List<Participant> participants = participants_to_invite.stream().map(email -> new Participant(email, trip)).toList();
-
+        List<Participant> participants = participants_to_invite.stream()
+                .map(email -> new Participant(email, trip)).toList();
         this.participantRepository.saveAll(participants);
         System.out.println(participants.get(0).getId());
     }
@@ -48,7 +44,6 @@ public class ParticipantService {
     public ParticipantCreatePresenter registerParticipantToTrip(String email, Trip trip) {
         Participant newParticipant = new Participant(email, trip);
         this.participantRepository.save(newParticipant);
-
         return new ParticipantCreatePresenter(newParticipant.getId());
     }
 
@@ -61,11 +56,17 @@ public class ParticipantService {
         )).toList();
     }
 
-    public void triggerConfirmationEmailToParticipants(UUID tripId) {
-
+    public void triggerConfirmationEmailToParticipants(UUID tripId, Optional<Trip> trip) {
+//        List<Participant> tripResponse = this.participantRepository.findAllByTripId(tripId);
+//
+//        this.sesEmailSenderService.sendEmail(
+//                tripResponse.stream().map(Participant::getEmail).toList(),
+//                "EMAIL AMAZON",
+//                "Click here"
+//        );
     }
 
     public void triggerConfirmationEmailToParticipant(String email) {
-
+        // implementation needed
     }
 }
